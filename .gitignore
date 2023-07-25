@@ -1,3 +1,4 @@
 credentials.json
 credentials.py
 OpenAI.txt
+__pycache__
