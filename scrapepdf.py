@@ -125,5 +125,9 @@ def scrape_pdf(pdf_paths):
             print(f"Exception type: {exc_type.__name__}, Exception message: {str(e)}")
 
             continue
+
+    # export the text to a txt file
+    with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
+        f.write(final_text)
     
     return pdf_texts, pdf_headings
