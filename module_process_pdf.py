@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import traceback
+import pickle
 from tqdm import tqdm
 
 
@@ -16,18 +17,6 @@ def word_ratio_func(word):
         
     except:
         return 0, 0, 0
-    
-
-# get file paths for all pdfs (does not work for pdfs in subdirectories)
-# def get_file_paths(directory):
-    
-#     file_paths = []
-#     for root, directories, files in os.walk(directory):
-#         for filename in files:
-#             filepath = os.path.join(root, filename)
-#             file_paths.append(filepath)
-#     return file_paths
-    
 
 # Preprocess the text
 def preprocess_text(texts):
@@ -45,7 +34,7 @@ def preprocess_text(texts):
     return text
 
 # Scrape the text from the pdf file
-def scrape_pdf(pdf_paths):
+def process_pdf(pdf_paths):
     
     # store the pdf text and headings in dictionaries
     pdf_texts = {}
@@ -125,9 +114,25 @@ def scrape_pdf(pdf_paths):
             print(f"Exception type: {exc_type.__name__}, Exception message: {str(e)}")
 
             continue
-
-    # export the text to a txt file
-    with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
-        f.write(final_text)
     
     return pdf_texts, pdf_headings
+
+
+# Get file paths for the pdf files
+folder_path = "ShareholderLetters/" # put '/' at the end to get all files in the folder
+file_paths = []
+for root, directories, files in os.walk(folder_path):
+    for filename in files:
+        filepath = os.path.join(root, filename)
+        file_paths.append(filepath)
+
+
+# Scrape pdf files and store the text and headings in a dictionary
+pdf_texts, pdf_headings = process_pdf(file_paths) # total run time: 2 min 20 s 20 files
+
+# Save pdf texts and headings to pickle file
+with open("pdf_texts1.pkl", "wb") as f:
+    pickle.dump(pdf_texts, f)
+
+with open("pdf_headings1.pkl", "wb") as f:
+    pickle.dump(pdf_headings, f)
