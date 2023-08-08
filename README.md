@@ -10,6 +10,6 @@
 
 ### Folders:
 - Scores (contain sentiment scores of relevant models)
-- Shareholder letters (contain letters in the PDF formats)
-- Txt (contain shareholder letters as txt files)
+- Shareholder letters (contain letters in the .pdf format)
+- Txt (contain shareholder letters in the .txt format)
 - Src (contain other extra files, such as pickle files, analysis)

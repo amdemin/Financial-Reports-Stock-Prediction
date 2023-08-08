@@ -10,18 +10,20 @@ from tqdm import tqdm
 # Define headings in the document using word size function
 def word_ratio_func(word):
     try:
+        # calculate word size parameters
         word_length = len(word["text"])
         word_bottom = float(word['bottom'])
         word_top = float(word['top'])
         return (word_bottom - word_top), word_length, word["text"]
         
     except:
+        # in case of error, return zeros
         return 0, 0, 0
 
 # Preprocess the text
 def preprocess_text(texts):
 
-    # preprocess the text
+    # join the text and perform cleansing operations
     text = "".join(texts.values()).strip("●").strip("*")
     text = text.split("\n")
     text = [x for x in text if x != '' and x.startswith("Source") == False]
@@ -33,7 +35,7 @@ def preprocess_text(texts):
 
     return text
 
-# Scrape the text from the pdf file
+# Transform pdf into the text
 def process_pdf(pdf_paths):
     
     # store the pdf text and headings in dictionaries
@@ -92,9 +94,9 @@ def process_pdf(pdf_paths):
             text = preprocess_text(texts)
             final_text = " ".join(text)
 
-            # export the text to a txt file
-            with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
-                f.write(final_text)
+            # optionally, export the text to a txt file
+            # with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
+            #     f.write(final_text)
 
             # add the text to the dictionary
             pdf_texts[file_path.split("/")[-1].split(".")[0]] = final_text
@@ -103,13 +105,12 @@ def process_pdf(pdf_paths):
 
         except Exception as e:
 
+            # in case of error, print the specifics of issue
             exc_type, exc_value, exc_traceback = sys.exc_info()
             traceback_details = traceback.extract_tb(exc_traceback)
-
             filename = traceback_details[-1][0]
             line_no = traceback_details[-1][1]
             func = traceback_details[-1][2]
-
             print(f"Exception occurred in file {filename} at line {line_no} in function {func}")
             print(f"Exception type: {exc_type.__name__}, Exception message: {str(e)}")
 
@@ -119,7 +120,7 @@ def process_pdf(pdf_paths):
 
 
 # Get file paths for the pdf files
-folder_path = "ShareholderLetters/" # put '/' at the end to get all files in the folder
+folder_path = "ShareholderLetters/" # put '/' sign at the end of the folder
 file_paths = []
 for root, directories, files in os.walk(folder_path):
     for filename in files:
@@ -127,12 +128,11 @@ for root, directories, files in os.walk(folder_path):
         file_paths.append(filepath)
 
 
-# Scrape pdf files and store the text and headings in a dictionary
+# Transform pdf files into texts and headings and store them as dictionaries
 pdf_texts, pdf_headings = process_pdf(file_paths) # total run time: 2 min 20 s 20 files
 
-# Save pdf texts and headings to pickle file
-with open("pdf_texts1.pkl", "wb") as f:
+# Save pdf texts and headings to pickle files
+with open("pdf_texts.pkl", "wb") as f:
     pickle.dump(pdf_texts, f)
-
-with open("pdf_headings1.pkl", "wb") as f:
+with open("pdf_headings.pkl", "wb") as f:
     pickle.dump(pdf_headings, f)
