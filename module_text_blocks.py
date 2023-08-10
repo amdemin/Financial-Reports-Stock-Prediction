@@ -17,13 +17,18 @@ def split_text_into_blocks(text, headings):
             document_intro = text.split(headings[heading])[0]
             text_blocks['Document_intro'] = document_intro
         
-        # identify heading
-        text_after_heading = text.split(headings[heading])[1]
+        # prevent the error of index out of range
+        if len(text.split(headings[heading])) > 1:
+            text_after_heading = text.split(headings[heading])[1]
+        else:
+            text_after_heading = ""
+        
+        # identify the last heading
         if heading == len(headings) - 1:
             text_blocks[headings[heading]] = text_after_heading
             break
         else:
-            # identify the last heading
+            # identify middle headings
             text_of_heading = text_after_heading.split(headings[heading+1])[0]
             text_blocks[headings[heading]] = text_of_heading
     

@@ -1,4 +1,5 @@
-import pdfplumber
+# import pdfplumber
+import fitz
 import os
 import re
 import sys
@@ -11,10 +12,10 @@ from tqdm import tqdm
 def word_ratio_func(word):
     try:
         # calculate word size parameters
-        word_length = len(word["text"])
-        word_bottom = float(word['bottom'])
-        word_top = float(word['top'])
-        return (word_bottom - word_top), word_length, word["text"]
+        word_length = len(word[4])
+        word_bottom = float(word[1])
+        word_top = float(word[3])
+        return abs(word_bottom - word_top), word_length, word[4]
         
     except:
         # in case of error, return zeros
@@ -28,8 +29,6 @@ def preprocess_text(texts):
     text = text.split("\n")
     text = [x for x in text if x != '' and x.startswith("Source") == False]
     text = [x[0].replace("●", "") + x[1:] if x[0] == "●" else x for x in text]
-    text = [x[0].replace("*", "") + x[1:] if x[0] == "*" else x for x in text]
-    text = [x[0].replace("○", "") + x[1:] if x[0] == "○" else x for x in text]
     text = [x[0].replace("1", "") + x[1:] if x[1:3] in ["Q1", "Q2", "Q3", "Q4"] else x for x in text]
     text = text[2:]
 
@@ -48,24 +47,24 @@ def process_pdf(pdf_paths):
         try:
             
             # open the pdf file using pdfplumber library
-            reader = pdfplumber.open(file_path)
+            reader = fitz.open(file_path)
 
             # store the text and headings within one pdf file
             texts = {}
             headings = []
             headings_count = 0
 
-            for page_number in range(0, len(reader.pages)):
+            for page_number in range(len(reader)):
 
                 # get the specific page from the pdf file
-                page = reader.pages[page_number]
-                # extract text from page
-                text = page.extract_text()
+                page = reader.load_page(page_number)
+                # get text from page
+                text = page.get_text()
                 # add text to dictionary
                 texts[page_number] = text
 
-                # extract headings from page
-                words = page.extract_words()
+                # get headings from page
+                words = page.get_text("words")
                 word_count = 0
                 while word_count < len(words):
                     # find if the words are large enough to be headings
@@ -87,12 +86,12 @@ def process_pdf(pdf_paths):
                     word_count += 1
                 
                 # break if the page covers the reference section
-                if re.search("\nReference\n", text):
+                if "Reference" in heading:
                     break
             
             # preprocess the text
             text = preprocess_text(texts)
-            final_text = " ".join(text)
+            final_text = " ".join(text).strip()
 
             # optionally, export the text to a txt file
             # with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
@@ -100,6 +99,9 @@ def process_pdf(pdf_paths):
 
             # add the text to the dictionary
             pdf_texts[file_path.split("/")[-1].split(".")[0]] = final_text
+            # clean the headings
+            headings = [x.replace("\u200b", "remove") for x in headings]
+            headings = [x for x in headings if not re.search("remove", x)]    
             # add the headings to the dictionary
             pdf_headings[file_path.split("/")[-1].split(".")[0]] = headings
 
