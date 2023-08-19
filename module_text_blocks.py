@@ -41,6 +41,7 @@ def clean_text_blocks(text_blocks):
     # iterate over text blocks, removing '\u200b' and extra spaces
     for key in text_blocks:
         text_blocks[key] = re.sub('\u200b', '', text_blocks[key])
+        text_blocks[key] = re.sub('\xa0', '', text_blocks[key])
         text_blocks[key] = re.sub(' +', ' ', text_blocks[key])
 
     return text_blocks
