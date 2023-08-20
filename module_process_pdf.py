@@ -9,7 +9,7 @@ import traceback
 import pickle
 
 
-# Define headings in the document using word size function (Fitz)
+# Define headings in the document using word size function (Fitz library)
 def word_ratio_func(word):
     try:
         # calculate word size parameters
@@ -58,6 +58,7 @@ def process_pdf(pdf_paths):
     # store the pdf text and headings in dictionaries
     pdf_texts = {}
     pdf_headings = {}
+    pdf_headings_context = {}
 
     # iterate over the pdf files
     for file_path in tqdm(pdf_paths):
@@ -68,6 +69,7 @@ def process_pdf(pdf_paths):
             texts = {}
             headings = []
             headings_count = 0
+            headings_local_context = {}
             fitz_flag = False
 
             # open the pdf file using pdfplumber library
@@ -98,6 +100,7 @@ def process_pdf(pdf_paths):
                 table = plumber_page.extract_tables()
                 # if table exists on the page
                 if len(table):
+
                     # define the beginning of table
                     start_table = table[0][0][0].split("\n")[0]
                     # define the end of table
@@ -127,12 +130,20 @@ def process_pdf(pdf_paths):
                 word_count = 0
                 # iterate over words
                 while word_count < len(words):
+                    
                     # find if the words are large enough to be headings by calculating their size
                     word_size, word_length, word_text = word_ratio_func(words[word_count])
                     heading = []
+                    context_flag = True
 
                     # if word size is over 13.5, this means that the word is heading
                     if word_size > 13.5 and word_length > 1:
+
+                        # extract the preceding context of the heading if the heading is not the first word on the page
+                        if word_count > 3:
+                            heading_context = [words[word_count - 3]["text"], words[word_count - 2]["text"], words[word_count - 1]["text"]]
+                            headings_local_context[headings_count] = heading_context
+                            context_flag = False
                         # append the following words if they satisfy this heading size condition
                         while True:
                             heading.append(word_text)
@@ -142,7 +153,12 @@ def process_pdf(pdf_paths):
                             word_size, word_length, word_text = word_ratio_func(words[word_count])
                             # if word is small again, break the loop and finish the heading
                             if not word_size > 13.5 and word_length > 1:
+
                                 headings.append(" ".join(heading))
+                                # extract the forward context of the heading if the heading the first word on the page
+                                if context_flag:
+                                    heading_context = [words[word_count]["text"], words[word_count + 1]["text"], words[word_count + 2]["text"]]
+                                    headings_local_context[headings_count] = heading_context
                                 # add the indent of 10 words to avoid issues 
                                 word_count += 10
                                 break
@@ -158,16 +174,20 @@ def process_pdf(pdf_paths):
             final_text = " ".join(text).strip()
 
             # optionally, export the text to a txt file
-            with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
-                f.write(final_text)
+            # with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
+            #     f.write(final_text)
 
             # add the text to the dictionary
             pdf_texts[file_path.split("/")[-1].split(".")[0]] = final_text
+            
             # clean the headings
             headings = [x.replace("\u200b", "remove") for x in headings]
             headings = [x for x in headings if not re.search("remove", x)]    
             # add the headings to the dictionary
             pdf_headings[file_path.split("/")[-1].split(".")[0]] = headings
+
+            # add the headings context to the dictionary
+            pdf_headings_context[file_path.split("/")[-1].split(".")[0]] = headings_local_context
 
             # break
 
@@ -186,7 +206,7 @@ def process_pdf(pdf_paths):
 
             continue
     
-    return pdf_texts, pdf_headings
+    return pdf_texts, pdf_headings, pdf_headings_context
 
 
 # Get file paths for the pdf files
@@ -199,10 +219,16 @@ for root, directories, files in os.walk(folder_path):
 
 
 # Transform pdf files into texts and headings and store them as dictionaries
-pdf_texts, pdf_headings = process_pdf(file_paths) # total run time: 2 min 20 s 20 files
+pdf_texts, pdf_headings, pdf_headings_context = process_pdf(file_paths) # total run time: 2 min 20 s 20 files
+
+# print(pdf_texts)
+# print(pdf_headings)
+# print(pdf_headings_context)
 
 # Save pdf texts and headings to pickle files
-with open("pdf_texts.pkl", "wb") as f:
+with open("pdf_texts_test.pkl", "wb") as f:
     pickle.dump(pdf_texts, f)
-with open("pdf_headings.pkl", "wb") as f:
+with open("pdf_headings_test.pkl", "wb") as f:
     pickle.dump(pdf_headings, f)
+with open("pdf_headings_context_test.pkl", "wb") as f:
+    pickle.dump(pdf_headings_context, f)
