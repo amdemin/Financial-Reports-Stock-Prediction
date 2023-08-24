@@ -4,3 +4,5 @@ credentials_openai.py
 credentials_amazon.py
 Src/OpenAI.txt
 __pycache__
+Dataset Description.ipynb
+Sentiment Evaluation.ipynb

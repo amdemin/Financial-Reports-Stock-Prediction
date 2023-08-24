@@ -100,12 +100,31 @@ def process_pdf(pdf_paths):
                 table = plumber_page.extract_tables()
                 # if table exists on the page
                 if len(table):
-
-                    # define the beginning of table
+                    # get the first row of table, selecting the first element
                     start_table = table[0][0][0].split("\n")[0]
-                    # define the end of table
+                    # get the last row of table, selecing the last non-empty element
                     end_table = table[-1][-1]
-                    end_table = [x for x in end_table if x is not None][-1]
+                    end_table = [x for x in end_table if x is not None and x != '' and x != ' ']
+                    if end_table == []:
+                        end_table = ''
+                    elif len(end_table) > 1:
+                        end_table = end_table[-1]
+                    else:
+                        end_table = end_table[0]
+                    # add condition, because sometimes the end row of table is empty
+                    if end_table == ' ' or end_table == '':
+                        try:
+                            # get the 2nd last row of table, selecing the last non-empty element
+                            end_table = table[-1][-2] 
+                            end_table = [x for x in end_table if x is not None and x != '' and x != ' ']
+                            if end_table == []:
+                                end_table = ['']
+                            elif len(end_table) > 1:
+                                end_table = end_table[-1]
+                            else:
+                                end_table = end_table[0]
+                        except:
+                            pass
                     # if table has non-empty start and ending
                     if start_table != '' and end_table != '':
                         # flatten the table list of words and digits
@@ -117,8 +136,14 @@ def process_pdf(pdf_paths):
                         # calculate the digit to character ratio
                         ratio = digit_character_ratio(table_list)
                         # remove table if digit to character ratio is over 0.2, meaning that table contains numeric data
-                        if ratio > 0.2:
-                            # update the page text by removing table
+                        if ratio > 0.175:
+                            # 
+                            if len(text.split(start_table)[0] + text.split(end_table)[-1]) / len(text) > 0.99:
+                                try:
+                                    start_table = table[0][1][0].split("\n")[0]
+                                except:
+                                    pass
+                            
                             text = text.split(start_table)[0] + text.split(end_table)[-1]
 
                 # add text to dictionary of texts
