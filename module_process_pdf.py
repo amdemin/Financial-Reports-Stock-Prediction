@@ -199,8 +199,8 @@ def process_pdf(pdf_paths):
             final_text = " ".join(text).strip()
 
             # optionally, export the text to a txt file
-            # with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
-            #     f.write(final_text)
+            with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
+                f.write(final_text)
 
             # add the text to the dictionary
             pdf_texts[file_path.split("/")[-1].split(".")[0]] = final_text
@@ -214,8 +214,6 @@ def process_pdf(pdf_paths):
             # add the headings context to the dictionary
             pdf_headings_context[file_path.split("/")[-1].split(".")[0]] = headings_local_context
 
-            # break
-
         except Exception as e:
 
             # in case of error, print the specifics of issue
@@ -226,8 +224,6 @@ def process_pdf(pdf_paths):
             func = traceback_details[-1][2]
             print(f"Exception occurred in file {filename} at line {line_no} in function {func}")
             print(f"Exception type: {exc_type.__name__}, Exception message: {str(e)}")
-
-            # break
 
             continue
     
@@ -251,9 +247,9 @@ pdf_texts, pdf_headings, pdf_headings_context = process_pdf(file_paths) # total 
 # print(pdf_headings_context)
 
 # Save pdf texts and headings to pickle files
-with open("pdf_texts_test.pkl", "wb") as f:
+with open("pdf_texts_test.pkl", "wb") as f: # save texts
     pickle.dump(pdf_texts, f)
-with open("pdf_headings_test.pkl", "wb") as f:
+with open("pdf_headings_test.pkl", "wb") as f: # save headings
     pickle.dump(pdf_headings, f)
-with open("pdf_headings_context_test.pkl", "wb") as f:
+with open("pdf_headings_context_test.pkl", "wb") as f: # save headings context, helping to identify the correct heading
     pickle.dump(pdf_headings_context, f)
