@@ -61,7 +61,7 @@ def process_pdf(pdf_paths):
     pdf_headings_context = {}
 
     # iterate over the pdf files
-    for file_path in tqdm(pdf_paths):
+    for file_path in pdf_paths:
 
         try:
 
@@ -230,26 +230,23 @@ def process_pdf(pdf_paths):
     return pdf_texts, pdf_headings, pdf_headings_context
 
 
-# Get file paths for the pdf files
-folder_path = "ShareholderLetters/" # put '/' sign at the end of the folder
-file_paths = []
-for root, directories, files in os.walk(folder_path):
-    for filename in files:
-        filepath = os.path.join(root, filename)
-        file_paths.append(filepath)
+if __name__ == "__main__":
 
+    # Get file paths for the pdf files
+    folder_path = "ShareholderLetters/" # put '/' sign at the end of the folder
+    file_paths = []
+    for root, directories, files in os.walk(folder_path):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)
 
-# Transform pdf files into texts and headings and store them as dictionaries
-pdf_texts, pdf_headings, pdf_headings_context = process_pdf(file_paths) # total run time: 2 min 20 s 20 files
+    # Transform pdf files into texts and headings and store them as dictionaries
+    pdf_texts, pdf_headings, pdf_headings_context = process_pdf(file_paths) # total run time: 1 min 50 files
 
-# print(pdf_texts)
-# print(pdf_headings)
-# print(pdf_headings_context)
-
-# Save pdf texts and headings to pickle files
-with open("pdf_texts_test.pkl", "wb") as f: # save texts
-    pickle.dump(pdf_texts, f)
-with open("pdf_headings_test.pkl", "wb") as f: # save headings
-    pickle.dump(pdf_headings, f)
-with open("pdf_headings_context_test.pkl", "wb") as f: # save headings context, helping to identify the correct heading
-    pickle.dump(pdf_headings_context, f)
+    # Save pdf texts and headings to pickle files
+    with open("pdf_texts_test.pkl", "wb") as f: # save texts
+        pickle.dump(pdf_texts, f)
+    with open("pdf_headings_test.pkl", "wb") as f: # save headings
+        pickle.dump(pdf_headings, f)
+    with open("pdf_headings_context_test.pkl", "wb") as f: # save headings context, helping to identify the correct heading
+        pickle.dump(pdf_headings_context, f)

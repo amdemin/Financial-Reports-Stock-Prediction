@@ -1,0 +1,51 @@
+ReportName,MyReportName,AverageManualScore,file_name,release_date,sentiment_score_blob,sentiment_score_vader,sentiment_score_lm
+COMBINED-Q4-17-Shareholder-Letter-FINAL,COMBINED-Q4-17-Shareholder-Letter-FINAL,0.6,COMBINED-Q4-17-Shareholder-Letter-FINAL,"January 22, 2018",0.1501449836712994,0.086,15.0
+FINAL_Q2_15_Letter_to_Shareholders_With_Tables_,FINAL_Q2_15_Letter_to_Shareholders_With_Tables_,0.3333333333,FINAL_Q2_15_Letter_to_Shareholders_With_Tables_,"July 15, 2015",0.1156905656999641,0.123,23.0
+FINAL_Q3_15_Letter_to_Shareholders_With_Tables_,FINAL_Q3_15_Letter_to_Shareholders_With_Tables_,0.1666666667,FINAL_Q3_15_Letter_to_Shareholders_With_Tables_,"October 14, 2015",0.1001854590644625,0.088,16.0
+FINAL_Q3_Letter,FINAL_Q3_Letter,0.4833333333,FINAL_Q3_Letter,"October 17, 2016",0.1124685090210568,0.103,23.0
+FINAL-Q1-18-Shareholder-Letter,FINAL-Q1-18-Shareholder-Letter,0.5,FINAL-Q1-18-Shareholder-Letter,"April 16, 2018",0.114444907738899,0.063,4.0
+FINAL-Q1-19-Shareholder-Letter,FINAL-Q1-19-Shareholder-Letter,0.4166666667,FINAL-Q1-19-Shareholder-Letter,"April 16, 2019",0.1412239183818131,0.072,29.0
+FINAL-Q1-20-Shareholder-Letter,FINAL-Q1-20-Shareholder-Letter,0.0,FINAL-Q1-20-Shareholder-Letter,"April 21, 2020",0.0954708859215902,0.08,1.0
+FINAL-Q1-21-Shareholder-Letter,FINAL-Q1-21-Shareholder-Letter,0.4166666667,FINAL-Q1-21-Shareholder-Letter,"April 20, 2021",0.1011061204934722,0.098,12.0
+FINAL-Q1-22-Shareholder-Letter,FINAL-Q1-22-Shareholder-Letter,-0.08333333333,FINAL-Q1-22-Shareholder-Letter,"April 19, 2022",0.107183796490248,0.113,22.0
+Final-Q1-23-Shareholder-Letter,Final-Q1-23-Shareholder-Letter,0.5166666667,Final-Q1-23-Shareholder-Letter,"April 18, 2023",-0.0295197740112994,0.0079999999999999,-2.0
+FINAL-Q2-18-Shareholder-Letter,FINAL-Q2-18-Shareholder-Letter,0.3333333333,FINAL-Q2-18-Shareholder-Letter,"July 16, 2018",0.1085364623991672,0.068,13.0
+FINAL-Q2-20-Shareholder-Letter-V3-with-Tables,FINAL-Q2-20-Shareholder-Letter-V3-with-Tables,0.3333333333,FINAL-Q2-20-Shareholder-Letter-V3-with-Tables,"July 16, 2020",0.1040259846362787,0.06,13.0
+FINAL-Q2-21-Shareholder-Letter,FINAL-Q2-21-Shareholder-Letter,0.3333333333,FINAL-Q2-21-Shareholder-Letter,"July 20, 2021",0.0886768245585673,0.0799999999999999,27.0
+FINAL-Q2-22-Shareholder-Letter,FINAL-Q2-22-Shareholder-Letter,0.3333333333,FINAL-Q2-22-Shareholder-Letter,"July 19, 2022",0.088338115372999,0.097,30.0
+FINAL-Q2-23-Shareholder-Letter,FINAL-Q2-23-Shareholder-Letter,0.4166666667,FINAL-Q2-23-Shareholder-Letter,"July 19, 2023",-0.0291666666666666,0.012,-2.0
+FINAL-Q3-18-Shareholder-Letter,FINAL-Q3-18-Shareholder-Letter,0.4166666667,FINAL-Q3-18-Shareholder-Letter,"October 16, 2018",0.1123968039963802,0.086,14.0
+FINAL-Q3-19-Shareholder-Letter,FINAL-Q3-19-Shareholder-Letter,0.25,FINAL-Q3-19-Shareholder-Letter,"October 16, 2019",0.1233856811356811,0.096,30.0
+FINAL-Q3-20-Shareholder-Letter,FINAL-Q3-20-Shareholder-Letter,-0.08333333333,FINAL-Q3-20-Shareholder-Letter,"October 20, 2020",0.1066519946152534,0.095,27.0
+FINAL-Q3-21-Shareholder-Letter,FINAL-Q3-21-Shareholder-Letter,0.5,FINAL-Q3-21-Shareholder-Letter,"October 19, 2021",0.1262708882027064,0.1069999999999999,36.0
+FINAL-Q3-22-Shareholder-Letter,FINAL-Q3-22-Shareholder-Letter,0.4166666667,FINAL-Q3-22-Shareholder-Letter,"October 18, 2022",0.1200074675324675,0.1099999999999999,28.0
+FINAL-Q4-18-Shareholder-Letter,FINAL-Q4-18-Shareholder-Letter,0.4166666667,FINAL-Q4-18-Shareholder-Letter,"January 17, 2019",0.1557563665007485,0.088,22.0
+FINAL-Q4-19-Shareholder-Letter,FINAL-Q4-19-Shareholder-Letter,0.4166666667,FINAL-Q4-19-Shareholder-Letter,"January 21, 2020",0.0970532672455749,0.064,26.0
+FINAL-Q420-Shareholder-Letter,FINAL-Q420-Shareholder-Letter,0.5666666667,FINAL-Q420-Shareholder-Letter,"January 19, 2021",0.1236841357295902,0.089,18.0
+FINAL-Q4-21-Shareholder-Letter,FINAL-Q4-21-Shareholder-Letter,0.25,FINAL-Q4-21-Shareholder-Letter,"January 20, 2022",0.0774951638538594,0.072,20.0
+FINAL-Q4-22-Shareholder-Letter,FINAL-Q4-22-Shareholder-Letter,0.3166666667,FINAL-Q4-22-Shareholder-Letter,"January 19, 2023",0.1311777151113492,0.128,51.0
+Investor_Letter_Q12013,Investor_Letter_Q12013,0.0,Investor_Letter_Q12013,"April 22, 2013",0.1134514049496925,0.099,25.0
+Investor-Letter-Q1-2012,Investor-Letter-Q1-2012,0.0,Investor-Letter-Q1-2012,"April 23, 2012",0.0927297068651694,0.105,70.0
+Investor-Letter-Q2-2012-07.24.12,Investor-Letter-Q2-2012-07,0.4166666667,,,,,
+Investor-Letter-Q3-2011,Investor-Letter-Q3-2011,-0.08333333333,Investor-Letter-Q3-2011,October  2,0.0912497401229628,0.0529999999999999,16.0
+Investor-Letter-Q3-2012-10.23.12,Investor-Letter-Q3-2012-10,0.25,,,,,
+Investor-Letter-Q4-2011,Investor-Letter-Q4-2011,0.3333333333,Investor-Letter-Q4-2011,"January 25, 2012",0.11961779153489,0.12,37.0
+Investor-Letter-Q42012-01.23.13,Investor-Letter-Q42012-01,0.4,,,,,
+July2014EarningsLetter_7.21.14_final,July2014EarningsLetter_7,0.4833333333,July2014EarningsLetter_7.21.14_final,"July 21, 2014",0.1139970173675531,0.091,25.0
+July-Investor-Letter-1130am,July-Investor-Letter-1130am,0.3333333333,July-Investor-Letter-1130am,"July 25, 2011",0.1208365291923382,0.101,37.0
+Q1_15_Earnings_Letter_final_tables,Q1_15_Earnings_Letter_final_tables,0.3333333333,Q1_15_Earnings_Letter_final_tables,"April 15, 2015",0.0894623344859193,0.091,23.0
+Q1-11-Letter-to-shareholders,Q1-11-Letter-to-shareholders,0.4333333333,Q1-11-Letter-to-shareholders,"April 25, 2011",0.0739130713918849,0.0829999999999999,14.0
+Q114-Earnings-Letter-4.21.14-final,Q114-Earnings-Letter-4,0.1666666667,Q114-Earnings-Letter-4.21.14-final,"April 21, 2014",0.1219759864916932,0.1,40.0
+Q116LettertoShareholders_W_TABLES_,Q116LettertoShareholders_W_TABLES_,0.5,Q116LettertoShareholders_W_TABLES_,"April 18, 2016",0.1222216224204175,0.118,38.0
+Q117ShareholderLetterV2FINAL,Q117ShareholderLetterV2FINAL,0.4333333333,Q117ShareholderLetterV2FINAL,"April 17, 2017",0.0886247294372293,0.1149999999999999,22.0
+Q2_17_Shareholder_Letter,Q2_17_Shareholder_Letter,0.4166666667,Q2_17_Shareholder_Letter,"July 17, 2017",0.1288017657372496,0.125,18.0
+Q213-Investor-Letter,Q213-Investor-Letter,0.4833333333,Q213-Investor-Letter,"July 22, 2013",0.132369699617406,0.124,31.0
+Q216LettertoShareholders_FINAL_w_Tables,Q216LettertoShareholders_FINAL_w_Tables,0.125,Q216LettertoShareholders_FINAL_w_Tables,"July 18, 2016",0.1094486694048689,0.098,26.0
+Q2-19-Shareholder-Letter-FINAL,Q2-19-Shareholder-Letter-FINAL,0.1666666667,Q2-19-Shareholder-Letter-FINAL,"July 17, 2019",0.1261662619872952,0.082,13.0
+Q3_14_Letter_to_shareholders,Q3_14_Letter_to_shareholders,0.5,Q3_14_Letter_to_shareholders,"October 15, 2014",0.1328545540527406,0.1099999999999999,36.0
+Q3_17_Shareholder_Letter_COMBINED,Q3_17_Shareholder_Letter_COMBINED,0.525,Q3_17_Shareholder_Letter_COMBINED,"October 16, 2017",0.1160595906151461,0.1119999999999999,31.0
+Q313-Earnings-Letter-10.21.13-10.30am,Q313-Earnings-Letter-10,0.65,,,,,
+Q4_14_Letter_to_shareholders,Q4_14_Letter_to_shareholders,0.4333333333,Q4_14_Letter_to_shareholders,"January 20, 2015",0.1396417807781443,0.099,47.0
+Q4_15_Letter_to_Shareholders_-_COMBINED,Q4_15_Letter_to_Shareholders_-_COMBINED,0.4166666667,Q4_15_Letter_to_Shareholders_-_COMBINED,"January 19, 2016",0.103631145443072,0.108,20.0
+Q4-13-Letter-to-shareholders,Q4-13-Letter-to-shareholders,0.5666666667,Q4-13-Letter-to-shareholders,"January 22, 2014",0.1138437629726413,0.0849999999999999,36.0
+Q416ShareholderLetter,Q416ShareholderLetter,0.4833333333,Q416ShareholderLetter,"January 18, 2017",0.1041904069555584,0.079,20.0
