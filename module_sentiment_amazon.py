@@ -1,12 +1,9 @@
 # Import libraries
-import os
-import tiktoken
-
-# Import libraries
 import pandas as pd
 import numpy as np
 import os
 import openai
+import tiktoken
 
 # Import credentials
 from credentials_amazon import *

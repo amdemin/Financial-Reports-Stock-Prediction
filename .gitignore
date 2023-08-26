@@ -4,6 +4,7 @@ credentials_openai.py
 credentials_amazon.py
 Src/OpenAI.txt
 __pycache__
+.ipynb_checkpoints
 notebook_dataset_analysis.ipynb
 notebook_evaluation.ipynb
 Sentiment_Model_Amazon.ipynb
