@@ -28,8 +28,29 @@
 * `pip install textblob`
 * `pip install tqdm`
 * `pip install nltk`
+* `pip install wordcloud`
 * `pip install scikit-learn`
 * `pip install transformers`
 * `pip install spacy` and `python3 -m spacy download en_core_web_sm`
 
-Amazon, Google and OpenAI API keys are needed to run the models
+**Amazon, Google and OpenAI API keys are needed to run the models**
+
+### Amazon
+
+`AWS_ACCESS_KEY_ID = "YOUR_ACCESS_KEY_ID"` <br>
+`AWS_SECRET_ACCESS_KEY = "YOUR_SECRET_ACCESS_KEY"` <br>
+`AWS_REGION = "YOUR_REGION"`
+
+### Google
+
+`{` <br>
+  `"client_id": "YOUR_CLIENT_ID"`, <br>
+  `"client_secret": "YOUR_CLIENT_SECRET",` <br>
+  `"quota_project_id": "YOUR_QUOTA_PROJECT_ID",` <br>
+  `"refresh_token": "YOUR_REFRESH_TOKEN",` <br>
+  `"type": "authorized_user"` <br>
+`}`
+
+### OpenAI
+
+`openai_api_key = "YOUR_OPENAI_API_KEY"`

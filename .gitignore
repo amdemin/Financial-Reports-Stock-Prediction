@@ -6,7 +6,7 @@ Src/OpenAI.txt
 __pycache__
 .ipynb_checkpoints
 notebook_dataset_analysis.ipynb
-notebook_evaluation.ipynb
+notebook_Artem_evaluation.ipynb
 Sentiment_Model_Amazon.ipynb
 Sentiment_Model_Google.ipynb
 Sentiment_Model_OpenAI.ipynb
