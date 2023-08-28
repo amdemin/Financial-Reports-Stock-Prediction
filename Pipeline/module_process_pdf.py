@@ -199,8 +199,8 @@ def process_pdf(pdf_paths):
             final_text = " ".join(text).strip()
 
             # optionally, export the text to a txt file
-            with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
-                f.write(final_text)
+            # with open("Txt/" + file_path.split("/")[-1].split(".")[0] + ".txt", "w", encoding='utf-8') as f:
+            #     f.write(final_text)
 
             # add the text to the dictionary
             pdf_texts[file_path.split("/")[-1].split(".")[0]] = final_text

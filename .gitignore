@@ -7,12 +7,5 @@ __pycache__
 .ipynb_checkpoints
 notebook_dataset_analysis.ipynb
 notebook_Artem_evaluation.ipynb
-Sentiment_Model_Amazon.ipynb
-Sentiment_Model_Google.ipynb
-Sentiment_Model_OpenAI.ipynb
-Sentiment_Model_TextBlob.ipynb
-Testing_API.ipynb
-Testing_OpenAI.ipynb
-Testing_Evaluation.ipynb
-Testing_Preprocessing.ipynb
-Testing_PostMarket_Judgment.ipynb
+Sentiment*
+Testing*

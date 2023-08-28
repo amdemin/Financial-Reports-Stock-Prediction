@@ -31,7 +31,7 @@
 * `pip install wordcloud`
 * `pip install scikit-learn`
 * `pip install transformers`
-* `pip install spacy` and `python3 -m spacy download en_core_web_sm`
+* `pip install spacy` and `python -m spacy download en_core_web_sm`
 
 **Amazon, Google and OpenAI API keys are needed to run the models**
 

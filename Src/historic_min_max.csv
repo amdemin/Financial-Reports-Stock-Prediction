@@ -1,5 +1,7 @@
-Name	Min	Max
-Manual	-0.15	0.66
-TextBlob	0.07	0.186
-Google	0	0.3
-Amazon	0.689	0.9058
+Name,Min,Max
+Manual,-0.15,0.66
+TextBlob,0.07,0.186
+Google,0,0.3
+Amazon,0.689,0.9058
+BERT,-27.947,-6.54
+RoBERTa,-21.82,-5.0054

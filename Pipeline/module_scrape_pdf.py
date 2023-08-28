@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import Select
 import os
 import time
 
-def scrape_pdf(scraping_page, scrape_all=False):
+def scrape_pdf(scraping_page, scrape_all=False, download_folder="Pipeline"):
 
     try:
     
@@ -21,7 +21,7 @@ def scrape_pdf(scraping_page, scrape_all=False):
 
         # Define options to download file to specific folder
         prefs = {
-            'download.default_directory': current_directory + '\PipelineFiles',
+            'download.default_directory': os.path.join(current_directory, download_folder),
             "download.prompt_for_download": False,     # set False to auto download the file
             "download.directory_upgrade": True,
             "plugins.always_open_pdf_externally": True # set True to download pdf files
@@ -62,6 +62,10 @@ def scrape_pdf(scraping_page, scrape_all=False):
             for url in home_urls:
                 driver.get(url)
 
+        # close the tab
+        driver.close()
+
+        # close the browser
         driver.quit()
 
         return "PDF file(s) downloaded successfully"
