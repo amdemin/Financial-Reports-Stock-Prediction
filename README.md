@@ -1,20 +1,25 @@
 # ARP
 
-### The code is organized as follows:
-1. 'module_process_pdf.py' is file that transforms the pdf files into text files
-2. 'module_text_blocks.py' is file that processes the text files into blocks of text based on headings, convenient for analysis
-3. 'module_sentiment_"ModelName".py' are files containing models that perform sentiment analysis individually
-4. 'notebook_dataset_analysis.ipynb' is file that visualises our cleaned data 
-5. 'notebook_evaluation.ipynb' is file that evaluates all the models
-6. 'notebook_pipeline.ipynb' is file that runs the whole sentiment pipeline for a specific document
-
-
+### Please, before trying the code familiarise yourself with our project structure
 
 ### Folders:
-- Scores (contain sentiment scores of relevant models)
-- Shareholder letters (contain letters in the .pdf format)
-- Txt (contain shareholder letters in the .txt format)
-- Src (contain other extra files for data analysis, such as pickle, csv files)
+1. Pipeline (contain main preprocessing modules)
+- 'module_scrape_pdf.py' extracts and downloads pdf files from the website
+- 'module_process_pdf.py' transforms pdf files into text files
+- 'module_text_blocks.py' splits text files into blocks of text based on headings, convenient for further analysis
+- 'module_functions.py' normalises the model sentiment scores
+2. Models              (contain sentiment models modules)
+- 'module_sentiment_"model_name".py' contain model that perform sentiment analysis
+3. Scores              (contain sentiment scores of relevant models)
+4. Shareholder letters (contain letters in the .pdf format)
+5. Src                 (contain other extra files for data analysis, such as pickle, csv files)
+6. PostMarket          (contain notebooks to scrape and calculate sentiment of Financial Times articles)
+
+### Main Notebooks
+1. 'Notebook_Dataset_Analysis.ipynb' analyses and visualises our preprocessd data 
+2. 'Notebook_Evaluation.ipynb' evaluates all the models
+3. 'Notebook_Pipeline.ipynb' runs the whole sentiment pipeline for a specific document / documents
+
 
 ### Libraries to install before usage:
 
@@ -33,15 +38,15 @@
 * `pip install transformers`
 * `pip install spacy` and `python -m spacy download en_core_web_sm`
 
-**Amazon, Google and OpenAI API keys are needed to run the models**
+**Amazon, Google and OpenAI API keys are needed to run their models**
 
-### Amazon
+### Amazon (credentials_amazon.py)
 
 `AWS_ACCESS_KEY_ID = "YOUR_ACCESS_KEY_ID"` <br>
 `AWS_SECRET_ACCESS_KEY = "YOUR_SECRET_ACCESS_KEY"` <br>
 `AWS_REGION = "YOUR_REGION"`
 
-### Google
+### Google (credentials_google.json)
 
 `{` <br>
   `"client_id": "YOUR_CLIENT_ID"`, <br>
@@ -51,6 +56,6 @@
   `"type": "authorized_user"` <br>
 `}`
 
-### OpenAI
+### OpenAI (credentials_openai.py)
 
 `openai_api_key = "YOUR_OPENAI_API_KEY"`

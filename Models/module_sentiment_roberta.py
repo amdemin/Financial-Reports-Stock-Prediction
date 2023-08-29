@@ -6,6 +6,7 @@ import pickle
 from tqdm.notebook import tqdm
 from transformers import pipeline, AutoModelForSequenceClassification, AutoTokenizer, RobertaTokenizer, RobertaForSequenceClassification
 import torch
+import time
 from torch.nn.functional import softmax
 
 
@@ -82,6 +83,13 @@ def calculate_roberta_polarity(joined_sentences, keywords):
 
 if __name__ == "__main__":
 
+    last_report = True
+    if last_report:
+        # Load the latest pdf text from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts_last_report.pkl", "rb"))
+    else:
+        # Load 50 pdf texts from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
 
     # Load the pre-trained BERT model and tokenizer
     model_name = "roberta-base"
@@ -91,9 +99,7 @@ if __name__ == "__main__":
     # Load nlp model
     nlp = spacy.load("en_core_web_sm")
 
-    # Load pdf texts from the pickle file
-    # pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
-    pdf_texts = pickle.load(open("PipelineFiles/pdf_texts.pickle", "rb"))
+    start = time.time()
 
     # Tokenize the reports
     joined_sentences = tokenize_reports(pdf_texts)
@@ -102,6 +108,9 @@ if __name__ == "__main__":
     keywords = ['revenue', 'forecast', 'profit']
     # Analyze the sentiment of the sentences containing the keywords
     baseline_keyword_polarity_dict = calculate_roberta_polarity(joined_sentences, keywords)
+
+    end = time.time()
+    print('Time taken to calculate sentiment using baseline keyword model: ', end - start)
 
     # Initialize a dictionary to hold total scores for each keyword in each report
     total_scores = {report: {keyword: 0 for keyword in keywords} for report in baseline_keyword_polarity_dict.keys()}

@@ -6,6 +6,7 @@ import numpy as np
 from transformers import pipeline
 import os
 import pickle
+import time
 
 
 def tokenize_reports(pdf_texts):
@@ -14,7 +15,7 @@ def tokenize_reports(pdf_texts):
     joined_sentences = {}
 
     # Iterate over each report in pdf_texts.
-    for report_name, report_text in tqdm(pdf_texts.items()): # 18 seconds
+    for report_name, report_text in pdf_texts.items():
 
         # Split the report text into sentences.
         sentences = nlp(report_text).sents
@@ -39,6 +40,7 @@ def tokenize_reports(pdf_texts):
 
 
 def calculate_baseline_keyword_polarity(joined_sentences, keywords):
+
     # Initialize the sentiment analysis pipeline
     sentiment_analysis = pipeline("sentiment-analysis")
 
@@ -68,11 +70,18 @@ def calculate_baseline_keyword_polarity(joined_sentences, keywords):
 
 if __name__ == "__main__":
 
+    last_report = True
+    if last_report:
+        # Load the latest pdf text from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts_last_report.pkl", "rb"))
+    else:
+        # Load 50 pdf texts from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
+
     # Load nlp model
     nlp = spacy.load("en_core_web_sm")
 
-    # Load pdf texts from the pickle file
-    pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
+    start = time.time()
 
     # Tokenize the reports
     joined_sentences = tokenize_reports(pdf_texts)
@@ -80,6 +89,9 @@ if __name__ == "__main__":
     keywords = ['revenue', 'forecast', 'profit']
     # Analyze the sentiment of the sentences containing the keywords
     baseline_keyword_polarity_dict = calculate_baseline_keyword_polarity(joined_sentences, keywords)
+
+    end = time.time()
+    print('Time taken to calculate sentiment using baseline keyword model: ', end - start)
 
     # Initialize a dictionary to hold total scores for each keyword in each report
     total_scores = {report: {keyword: 0 for keyword in keywords} for report in baseline_keyword_polarity_dict.keys()}

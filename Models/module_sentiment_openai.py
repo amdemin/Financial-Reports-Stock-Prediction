@@ -1,12 +1,21 @@
 # Import libraries
 import openai
+import pandas as pd
 import tiktoken
+import os
+import sys
 import re
+import time
+import pickle
 
-# Load local modules
+# Import Local Modules
+sys.path.append("Pipeline/")
 from module_text_blocks import split_text_into_blocks, clean_text_blocks
 
 # load credentials for OpenAI API
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
 from credentials_openai import *
 openai.api_key = openai_api_key
 
@@ -172,3 +181,56 @@ def calculate_openai_polarity(text_blocks, headings, text):
     except Exception as e:
 
         print(f"Exception message: {str(e)}")
+
+
+if __name__ == "__main__":
+
+    last_report = True
+    if last_report:
+        # Load the latest pdf text and heading from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts_last_report.pkl", "rb"))
+        pdf_headings = pickle.load(open("Src/pdf_headings_last_report.pkl", "rb"))
+        pdf_headings_context = pickle.load(open("Src/pdf_headings_context_last_report.pkl", "rb"))
+
+    else:
+        # Load 50 pdf texts and headings from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
+        pdf_headings = pickle.load(open("Src/pdf_headings.pkl", "rb"))
+        pdf_headings_context = pickle.load(open("Src/pdf_headings_context.pkl", "rb"))
+    
+    # set start time
+    start = time.time()
+
+    sentiment_scores = {}
+
+    for pdf_file in pdf_texts:
+
+        # Get text, headings and headings context
+        text = pdf_texts[pdf_file]
+        headings = pdf_headings[pdf_file]
+        headings_context = pdf_headings_context[pdf_file]
+
+        # Split text into blocks
+        text_blocks = split_text_into_blocks(text, headings, headings_context)
+
+        # Clean text blocks
+        text_blocks = clean_text_blocks(text_blocks)
+
+        # Calculate sentiment score
+        sentiment_score = calculate_openai_polarity(text_blocks, headings, text)
+
+        sentiment_scores[pdf_file] = sentiment_score
+
+    # set end time
+    end = time.time()
+    print('Time taken to calculate sentiment using OpenAI model: ', end - start)
+
+    # convert dictionary to dataframe
+    openai_polarity_df = pd.DataFrame.from_dict(sentiment_scores, orient='index', columns=['polarity']).reset_index()
+    # rename index column
+    openai_polarity_df.rename(columns={'index': 'pdf_name'}, inplace=True)
+
+    print(openai_polarity_df.head())
+
+    # export dataframe to csv
+    # openai_polarity_df.to_csv("Scores/openai_polarity.csv", index=False)

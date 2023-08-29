@@ -5,7 +5,7 @@ credentials_amazon.py
 Src/OpenAI.txt
 __pycache__
 .ipynb_checkpoints
-notebook_dataset_analysis.ipynb
-notebook_Artem_evaluation.ipynb
 Sentiment*
 Testing*
+notebook_Artem_evaluation.ipynb
+notebook_dataset*

@@ -1,6 +1,8 @@
 # Load libraries
 import pandas as pd
 import pickle
+import time
+import os
 
 def calculate_baseline_frequency_polarity(lexicon_path, text):
 
@@ -32,12 +34,24 @@ def calculate_baseline_frequency_polarity(lexicon_path, text):
 
 if __name__ == "__main__":
 
-    # Load pdf texts from the pickle file
-    pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
+    last_report = True
+    if last_report:
+        # Load the latest pdf text from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts_last_report.pkl", "rb"))
+    else:
+        # Load 50 pdf texts from the pickle file
+        pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
+
+    # set start time
+    start = time.time()
 
     # Calculate the baseline frequency polarity for each report
     lexicon_path = 'Src/Loughran-McDonald_MasterDictionary_1993-2021.csv'
     baseline_frequency_polarity = {report_name: calculate_baseline_frequency_polarity(lexicon_path, text) for report_name, text in pdf_texts.items()}
+
+    # set end time
+    end = time.time()
+    print('Time taken to calculate sentiment using baseline frequency model: ', end - start)
 
     # convert dictionary to dataframe
     baseline_frequency_polarity_df = pd.DataFrame.from_dict(baseline_frequency_polarity, orient='index', columns=['polarity']).reset_index()
