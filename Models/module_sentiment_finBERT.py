@@ -1,32 +1,13 @@
 # Load libraries
-from tqdm.notebook import tqdm
-import spacy
 import pandas as pd
 import numpy as np
-from transformers import pipeline
-import os
+import spacy
 import pickle
+from tqdm.notebook import tqdm
+from transformers import pipeline, AutoModelForSequenceClassification, AutoTokenizer
+import torch
 import time
-
-def calculate_baseline_frequency_polarity(negative_words_lm, positive_words_lm, text):
-
-    try:
-
-        # Calculating the baseline frequency polarity
-        words = text.lower().split()
-    
-        # Counting occurrences of positive and negative words
-        positive_count = sum(word in positive_words_lm for word in words)
-        negative_count = sum(word in negative_words_lm for word in words)
-    
-        # Calculating sentiment score as the difference between positive and negative counts
-        sentiment_score = positive_count - negative_count
-    
-        return sentiment_score
-
-    except Exception as e:
-
-        print('Error in loading the LM Lexicon: ', e)
+from torch.nn.functional import softmax
 
 
 def tokenize_reports(pdf_texts):
@@ -35,7 +16,7 @@ def tokenize_reports(pdf_texts):
     joined_sentences = {}
 
     # Iterate over each report in pdf_texts.
-    for report_name, report_text in pdf_texts.items():
+    for report_name, report_text in tqdm(pdf_texts.items()): # 18 seconds
 
         # Split the report text into sentences.
         sentences = nlp(report_text).sents
@@ -59,68 +40,89 @@ def tokenize_reports(pdf_texts):
     return joined_sentences
 
 
-def calculate_baseline_keyword_polarity(joined_sentences, keywords):
-
-    # Initialize the sentiment analysis pipeline
-    # sentiment_analysis = pipeline("sentiment-analysis")
-
+def calculate_bert_polarity(joined_sentences, keywords):
+      
     # Initialize a dictionary to store the sentences and their sentiment scores for each report
     sentiment_results_dict = {}
 
-    # Iterate over each report
-    for report_name, sentences in tqdm(joined_sentences.items()):
+    count = 0
 
+    # Iterate over each report
+    for report_name, sentences in joined_sentences.items():
         # Initialize a dictionary to store the sentiment analysis results for the current report
         report_sentiment_results = {keyword: [] for keyword in keywords}
 
+        # Create a list to hold sentence chunks
+        sentence_chunks = []
+
         for sentence in sentences:
-            if len(sentence) < 512: 
-                for keyword in keywords:
-                    if keyword in sentence.lower():
-                        # Analyze the sentiment of the sentence
-                        # sentiment_result = sentiment_analysis(sentence)[0]
-                        sentiment_result = calculate_baseline_frequency_polarity(negative_words_lm, positive_words_lm, sentence)
-                        report_sentiment_results[keyword].append(sentiment_result)
+            # If a sentence exceeds 512 tokens, break it into chunks
+            if len(sentence) >= 512:
+                chunked_sentences = [sentence[i:i + 512] for i in range(0, len(sentence), 512)]
+                sentence_chunks.extend(chunked_sentences)
+            else:
+                sentence_chunks.append(sentence)
+
+        # Analyze the sentiment for each sentence chunk using BERT model
+        for chunk in sentence_chunks:
+            chunk_lower = chunk.lower()
+            for keyword in keywords:
+                if keyword in chunk_lower:
+                    inputs = tokenizer(chunk, return_tensors="pt", padding=True, truncation=True, max_length=512)
+                    outputs = model(**inputs)
+                    probs = softmax(outputs.logits, dim=1)
+                    sentiment_result = {
+                        "label": "positive" if probs[0][1] > probs[0][0] else "negative",
+                        "score": probs[0][1].item()
+                    }
+                    report_sentiment_results[keyword].append(sentiment_result)
 
         # Add the results to the dictionary
         sentiment_results_dict[report_name] = report_sentiment_results
 
-    return sentiment_results_dict
+        count += 1
 
+        print(f'Report: {report_name} has been processed. {len(joined_sentences) - count} reports have left')
+
+    return sentiment_results_dict
 
 
 if __name__ == "__main__":
 
-    # Loading the Loughran and McDonald (LM) Lexicon CSV file
-    lexicon_path = 'Src/Loughran-McDonald_MasterDictionary_1993-2021.csv'
-    lm_lexicon = pd.read_csv(lexicon_path)
-
-    # Extracting positive and negative words from the LM Lexicon
-    positive_words_lm = lm_lexicon[lm_lexicon['Positive'] > 0]['Word'].str.lower().tolist()
-    negative_words_lm = lm_lexicon[lm_lexicon['Negative'] > 0]['Word'].str.lower().tolist()
 
     last_report = True
     if last_report:
-        # Load the latest pdf text from the pickle file
+        # Load the latest pdf text from the pickle file (takes 25 s)
         pdf_texts = pickle.load(open("Src/pdf_texts_last_report.pkl", "rb"))
     else:
-        # Load 50 pdf texts from the pickle file
+        # Load 50 pdf texts from the pickle file (takes 22 mins)
         pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
 
+    # Load the pre-trained BERT model and tokenizer
+    # model_name = "bert-base-uncased"
+    # tokenizer = BertTokenizer.from_pretrained(model_name)
+    # model = BertForSequenceClassification.from_pretrained(model_name)
+
+    model_name = "ProsusAI/finbert"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+
     # Load nlp model
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm") 
 
     start = time.time()
 
     # Tokenize the reports
     joined_sentences = tokenize_reports(pdf_texts)
+    
     # Define keywords
     keywords = ['revenue', 'forecast', 'profit']
     # Analyze the sentiment of the sentences containing the keywords
-    baseline_keyword_polarity_dict = calculate_baseline_keyword_polarity(joined_sentences, keywords)
+    baseline_keyword_polarity_dict = calculate_bert_polarity(joined_sentences, keywords)
 
     end = time.time()
-    print('Time taken to calculate sentiment using baseline keyword model: ', end - start)
+    print('Time taken to calculate sentiment using bert model: ', end - start)
 
     # Initialize a dictionary to hold total scores for each keyword in each report
     total_scores = {report: {keyword: 0 for keyword in keywords} for report in baseline_keyword_polarity_dict.keys()}
@@ -129,7 +131,12 @@ if __name__ == "__main__":
     for report_name, keywords_dict in baseline_keyword_polarity_dict.items():
         for keyword, sentiments in keywords_dict.items():
             for sentiment in sentiments:
-                total_scores[report_name][keyword] += sentiment
+                # If the sentiment is POSITIVE, add the score
+                # If the sentiment is NEGATIVE, subtract the score
+                if sentiment['label'] == 'POSITIVE':
+                    total_scores[report_name][keyword] += sentiment['score']
+                else:
+                    total_scores[report_name][keyword] -= sentiment['score']
 
     # Convert the total_scores to a DataFrame
     baseline_keyword_polarity_df = pd.DataFrame(total_scores).T
@@ -140,4 +147,4 @@ if __name__ == "__main__":
     print(baseline_keyword_polarity_df.head())
 
     # export dataframe to csv
-    # baseline_keyword_polarity_df.to_csv('Scores/baseline_keyword_polarity.csv', index=False)
+    # baseline_keyword_polarity_df.to_csv('Scores/finbert_polarity.csv', index=False)

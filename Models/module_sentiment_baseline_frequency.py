@@ -4,16 +4,9 @@ import pickle
 import time
 import os
 
-def calculate_baseline_frequency_polarity(lexicon_path, text):
+def calculate_baseline_frequency_polarity(positive_words_lm, negative_words_lm, text):
 
     try:
-        
-        # Loading the Loughran and McDonald (LM) Lexicon CSV file
-        lm_lexicon = pd.read_csv(lexicon_path)
-
-        # Extracting positive and negative words from the LM Lexicon
-        positive_words_lm = lm_lexicon[lm_lexicon['Positive'] > 0]['Word'].str.lower().tolist()
-        negative_words_lm = lm_lexicon[lm_lexicon['Negative'] > 0]['Word'].str.lower().tolist()
 
         # Calculating the baseline frequency polarity
         words = text.lower().split()
@@ -45,9 +38,15 @@ if __name__ == "__main__":
     # set start time
     start = time.time()
 
-    # Calculate the baseline frequency polarity for each report
+    # Loading the Loughran and McDonald (LM) Lexicon CSV file
     lexicon_path = 'Src/Loughran-McDonald_MasterDictionary_1993-2021.csv'
-    baseline_frequency_polarity = {report_name: calculate_baseline_frequency_polarity(lexicon_path, text) for report_name, text in pdf_texts.items()}
+    lm_lexicon = pd.read_csv(lexicon_path)
+
+    # Extracting positive and negative words from the LM Lexicon
+    positive_words_lm = lm_lexicon[lm_lexicon['Positive'] > 0]['Word'].str.lower().tolist()
+    negative_words_lm = lm_lexicon[lm_lexicon['Negative'] > 0]['Word'].str.lower().tolist()
+
+    baseline_frequency_polarity = {report_name: calculate_baseline_frequency_polarity(positive_words_lm, negative_words_lm, text) for report_name, text in pdf_texts.items()}
 
     # set end time
     end = time.time()

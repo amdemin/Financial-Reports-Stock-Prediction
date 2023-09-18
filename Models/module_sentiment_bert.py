@@ -78,18 +78,20 @@ def calculate_bert_polarity(joined_sentences, keywords):
         # Add the results to the dictionary
         sentiment_results_dict[report_name] = report_sentiment_results
 
+        print('Report: ', report_name)
+
     return sentiment_results_dict
 
 
 if __name__ == "__main__":
 
 
-    last_report = True
+    last_report = False
     if last_report:
-        # Load the latest pdf text from the pickle file
+        # Load the latest pdf text from the pickle file (takes 25 s)
         pdf_texts = pickle.load(open("Src/pdf_texts_last_report.pkl", "rb"))
     else:
-        # Load 50 pdf texts from the pickle file
+        # Load 50 pdf texts from the pickle file (takes 20 mins)
         pdf_texts = pickle.load(open("Src/pdf_texts.pkl", "rb"))
 
     # Load the pre-trained BERT model and tokenizer
@@ -98,7 +100,7 @@ if __name__ == "__main__":
     model = BertForSequenceClassification.from_pretrained(model_name)
 
     # Load nlp model
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm") 
 
     start = time.time()
 
@@ -133,7 +135,7 @@ if __name__ == "__main__":
     baseline_keyword_polarity_df.columns = ['pdf_name', 'revenue_score', 'forecast_score', 'profit_score']
     baseline_keyword_polarity_df['polarity'] = baseline_keyword_polarity_df['revenue_score'] + baseline_keyword_polarity_df['forecast_score'] + baseline_keyword_polarity_df['profit_score']
     
-    # print(baseline_keyword_polarity_df.head())
+    print(baseline_keyword_polarity_df.head())
 
     # export dataframe to csv
     # baseline_keyword_polarity_df.to_csv('Scores/bert_polarity.csv', index=False)

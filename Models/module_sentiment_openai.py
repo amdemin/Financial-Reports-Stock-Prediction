@@ -79,9 +79,7 @@ def openai_sentiment_analysis(final_prompt):
     fine_tune_messages = {"role": "system", "content":
                     "You are a helpful financial assistant who is expert in evaluating sentiment scores for financial statements \
                 You give precise answers to questions \
-                the quality of your answers is highly important, you never hallucinate answers - only \
-                answering based on your knowledge. Where the answer requires creative thought you engage \
-                in reflective internal dialogue to ascertain the best answer"
+                the quality of your answers is highly important, you never hallucinate answers - only answering based on your knowledge."
     }
 
     user_content = "The overall polarity and subjectivity scores on the strict range (very negative, moderately negative, slightly negative, neutral, slightly positive, moderately positive, very positive) for the text: "

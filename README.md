@@ -21,7 +21,7 @@
 3. 'Notebook_Pipeline.ipynb' runs the whole sentiment pipeline for a specific document / documents
 
 
-### Libraries to install before usage:
+### Libraries to install before usage (Python Version==3.10):
 
 * `pip install selenium==4.11.2` 
 * `pip install webdriver_manager`
@@ -40,13 +40,13 @@
 
 **Amazon, Google and OpenAI API keys are needed to run their models**
 
-### Amazon (credentials_amazon.py)
+### Amazon (name the file as *credentials_amazon.py*)
 
 `AWS_ACCESS_KEY_ID = "YOUR_ACCESS_KEY_ID"` <br>
 `AWS_SECRET_ACCESS_KEY = "YOUR_SECRET_ACCESS_KEY"` <br>
 `AWS_REGION = "YOUR_REGION"`
 
-### Google (credentials_google.json)
+### Google (name the file as *credentials_google.json*)
 
 `{` <br>
   `"client_id": "YOUR_CLIENT_ID"`, <br>
@@ -56,6 +56,6 @@
   `"type": "authorized_user"` <br>
 `}`
 
-### OpenAI (credentials_openai.py)
+### OpenAI (name the file as *credentials_openai.py*)
 
 `openai_api_key = "YOUR_OPENAI_API_KEY"`
