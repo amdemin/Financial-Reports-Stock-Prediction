@@ -2,7 +2,7 @@
 
 **This project aims to predict stock price movements using data from company financial reports and quarterly earnings shareholder meeting transcripts. By analyzing these reports, the model seeks to provide insights into potential future stock price trends.**
 
-### Please, before trying the code familiarise yourself with our project structure
+### Please, before executing the code familiarise yourself with the project structure:
 
 ### Folders:
 1. Pipeline (contain main preprocessing modules)
